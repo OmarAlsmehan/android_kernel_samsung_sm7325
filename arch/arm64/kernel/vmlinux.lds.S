@@ -143,6 +143,7 @@ SECTIONS
 			IDMAP_TEXT
 			HIBERNATE_TEXT
 			TRAMP_TEXT
+			*(.text..L.cfi.jumptable .text..L.cfi.jumptable.*)
 			*(.fixup)
 			*(.gnu.warning)
 		. = ALIGN(16);
@@ -235,6 +236,10 @@ SECTIONS
 	_data = .;
 	_sdata = .;
 	RW_DATA_SECTION(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
+
+	.test_modules : {
+		KUNIT_TEST_MODULES
+	}
 
 	/*
 	 * Data written with the MMU off but read with the MMU on requires

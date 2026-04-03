@@ -56,7 +56,6 @@ struct robust_list_head;
 struct root_domain;
 struct rq;
 struct sched_attr;
-struct sched_param;
 struct seq_file;
 struct sighand_struct;
 struct signal_struct;
@@ -327,6 +326,10 @@ enum uclamp_id {
 extern struct root_domain def_root_domain;
 extern struct mutex sched_domains_mutex;
 #endif
+
+struct sched_param {
+	int sched_priority;
+};
 
 struct sched_info {
 #ifdef CONFIG_SCHED_INFO
@@ -1456,11 +1459,21 @@ struct task_struct {
 	void				*security;
 #endif
 
+#ifdef CONFIG_SEC_PERF_MANAGER
+	int drawing_flag;
+	int drawing_mig_boost;
+#endif
+
 #ifdef CONFIG_GCC_PLUGIN_STACKLEAK
 	unsigned long			lowest_stack;
 	unsigned long			prev_lowest_stack;
 #endif
 
+	/*
+	 * [0] : sec_debug_wait.type
+	 * [1] : sec_debug_wait.data
+	 * [2] : Used by FIVE project
+	 */
 	ANDROID_VENDOR_DATA_ARRAY(1, 3);
 
 	ANDROID_KABI_RESERVE(1);
