@@ -199,7 +199,7 @@ void wait_for_unix_gc(void)
 	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
 	    !READ_ONCE(gc_in_progress))
 		unix_gc();
-	wait_event(unix_gc_wait, gc_in_progress == false);
+	wait_event(unix_gc_wait, !READ_ONCE(gc_in_progress));
 }
 
 /* The external entry point: unix_gc() */
@@ -250,7 +250,7 @@ void unix_gc(void)
 		struct sock *sk = &u->sk;
 		long total_refs;
 
-		total_refs = file_count(sk->sk_socket->file);
+		total_refs = file_count(u->sk.sk_socket->file);
 
 		BUG_ON(!u->inflight);
 		BUG_ON(total_refs < u->inflight);
