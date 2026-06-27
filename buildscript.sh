@@ -505,11 +505,12 @@ build_kernel() {
     esac
     export VARIANT DEVICE ARCH=arm64
 
-    export BRANCH="android11" KMI_GENERATION=2 DEPMOD=depmod LLVM=1 LLVM_IAS=1 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
+    export BRANCH="android11" KMI_GENERATION=2 LLVM=1 DEPMOD=depmod
     export KCFLAGS="${KCFLAGS} -D__ANDROID_COMMON_KERNEL__"
     export STOP_SHIP_TRACEPRINTK=1 IN_KERNEL_MODULES=1
     export DO_NOT_STRIP_MODULES=1 INSTALL_MOD_STRIP=1
-    export DEFCONF="${NK_DEFCONFIG}" FRAG="vendor/lineage-${VARIANT}_defconfig"
+    export FRAG="vendor/lineage-${VARIANT}_defconfig"
+    export LOCALVERSION="-NovaKernel-${BRANCH}-${KMI_GENERATION}-${COMREV}-${VARIANT}"
     export ABI_DEFINITION=android/abi_gki_aarch64.xml
     export KMI_SYMBOL_LIST=android/abi_gki_aarch64
     export ADDITIONAL_KMI_SYMBOL_LISTS="
